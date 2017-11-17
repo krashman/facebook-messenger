@@ -1,5 +1,10 @@
 # Change Log
 
+## [1.1.0] - ???
+
+### Added
+- Bot.broadcast uses the Messenger Broadcast API, now in beta, to send a broadcast set of messages to users who have an open conversation with your page's bot. ???
+
 ## [1.0.0] - 2017-05-31
 
 ### Added
