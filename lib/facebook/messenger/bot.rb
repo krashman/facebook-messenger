@@ -21,6 +21,37 @@ module Facebook
       ].freeze
 
       class << self
+        # Broadcast a message with the given payload using the beta Broadcast API
+        #
+        # messages - An array of hashes describing the messages you'd like to send.
+        #
+        # https://developers.facebook.com/docs/messenger-platform/reference/broadcast-api
+        #
+        # Returns the broadcast id as a string if successful, otherwise raises an exception
+        def broadcast(messages, access_token:)
+          response = post '/message_creatives',
+                          body: JSON.dump({ messages: messages }),
+                          format: :json,
+                          query: {
+                            access_token: access_token
+                          }
+
+          Facebook::Messenger::Bot::ErrorParser.raise_errors_from(response)
+
+          message_creative_id = JSON.parse(response.body)['message_creative_id']
+
+          response = post '/broadcast_messages',
+                          body: JSON.dump({ message_creative_id: message_creative_id}),
+                          format: :json,
+                          query: {
+                            access_token: access_token
+                          }
+
+          Facebook::Messenger::Bot::ErrorParser.raise_errors_from(response)
+
+          response.body
+        end
+
         # Deliver a message with the given payload.
         #
         # message - A Hash describing the recipient and the message*.
