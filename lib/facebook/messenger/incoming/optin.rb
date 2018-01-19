@@ -15,6 +15,10 @@ module Facebook
         def user_ref
           @messaging['optin']['user_ref']
         end
+
+        def sender
+          {user_ref: user_ref}
+        end
       end
     end
   end
