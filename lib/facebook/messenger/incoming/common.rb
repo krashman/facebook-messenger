@@ -17,6 +17,10 @@ module Facebook
           @messaging['recipient']
         end
 
+        def prior_message
+          @messaging['prior_message']
+        end
+
         def sent_at
           Time.at(@messaging['timestamp'] / 1000)
         end

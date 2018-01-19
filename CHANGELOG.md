@@ -1,5 +1,10 @@
 # Change Log
 
+## [1.1.1] - 2018-01.19
+### Added
+- `prior_message` method added to common incoming messages.
+  - See step 7, ["Handle the user response" in Facebook docs](https://developers.facebook.com/docs/messenger-platform/discovery/checkbox-plugin)
+
 ## [1.1.0] - 2018-01-19
 ### Added
 - `user_ref` included in `optin` message type
