@@ -17,7 +17,7 @@ module Facebook
         end
 
         def sender
-          {user_ref: user_ref}
+          { user_ref: user_ref }
         end
       end
     end
