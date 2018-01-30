@@ -187,6 +187,30 @@ Bot.on :message_request do |message_request|
 end
 ```
 
+#### Send a Broadcast Message
+
+```ruby
+
+response = Bot.prepare_broadcast({
+              message: {
+                text: "Hello everyone!"
+              }
+            }, 
+            access_token: '...')
+response = JSON.parse(response)
+#=> {"message_creative_id": <BROADCAST_MESSAGE_ID>}
+broadcast_message_id = response['message_creative_id']
+
+# when you want to send the message:
+
+Bot.broadcast(broadcast_message_id, 
+  notification_type: <BROADCAST_MESSAGE_REGULAR|BROADCAST_MESSAGE_SILENT|BROADCAST_MESSAGE_NO_PUSH>,
+  message_tag: 'APPLICATION_UPDATE' # NOTE: must be a supported tag: https://developers.facebook.com/docs/messenger-platform/send-messages/message-tags,
+  access_token: '...'
+  )
+#=> {"broadcast_id": <BROADCAST_ID> }
+```
+
 #### Send to Facebook
 
 When the human clicks the [Send to Messenger button][send-to-messenger-plugin]

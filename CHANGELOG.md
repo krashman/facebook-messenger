@@ -1,5 +1,9 @@
 # Change Log
 
+## [1.3.0] - INSERT DATE
+### Added
+- You may not send broadcast messages via the open beta API.
+
 ## [1.2.0] - 2018-02-01
 ### Added
 - ability to handle `messaging_policy_enforcement` webhook from Facebook

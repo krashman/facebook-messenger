@@ -8,7 +8,7 @@ module Facebook
     module Bot
       include HTTParty
 
-      base_uri 'https://graph.facebook.com/v2.6/me'
+      base_uri 'https://graph.facebook.com/v2.11/me'
 
       EVENTS = %i[
         message
@@ -22,6 +22,10 @@ module Facebook
         payment
         policy-enforcement
       ].freeze
+
+      BROADCAST_MESSAGE_REGULAR = 'REGULAR'.freeze
+      BROADCAST_MESSAGE_SILENT  = 'SILENT_PUSH'.freeze
+      BROADCAST_MESSAGE_NO_PUSH = 'NO_PUSH'.freeze
 
       class << self
         # Deliver a message with the given payload.
@@ -43,6 +47,49 @@ module Facebook
           Facebook::Messenger::Bot::ErrorParser.raise_errors_from(response)
 
           response.body
+        end
+
+        # Prepare a broadcast message by retrieving a `message_creative_id` first, which is required. This does not send the broadcast message.
+        # https://developers.facebook.com/docs/messenger-platform/send-messages/broadcast-messages
+        #
+        # message - A Hash describing the message and message type
+        #
+        # Returns a JSON String with the `message_creative_id` inside it, if it was created successfully.
+        def prepare_broadcast(message, access_token:)
+          response = post '/message_creatives',
+                          body: JSON.dump(message),
+                          format: :json,
+                          query: {
+                            access_token: access_token
+                          }
+          Facebook::Messenger::Bot::ErrorParser.raise_errors_from(response)
+
+          response.body
+        end
+
+
+        # Send the broadcast message as defined by the message_creative_id.
+        #
+        # message_creative_id - An integer/string that was returned when calling `prepare_broadcast`
+        # notification_type - A string of either REGULAR, SILENT_PUSH, NO_PUSH*
+        # message_tag - A string defining the message type**
+        #
+        # * https://developers.facebook.com/docs/messenger-platform/send-messages/broadcast-messages
+        # ** https://developers.facebook.com/docs/messenger-platform/send-messages/message-tags
+        #
+        # Returns a JSON string with the broadcast ID inside it.
+        def broadcast(message_creative_id, notification_type: BROADCAST_MESSAGE_REGULAR, message_tag:, access_token:)
+          body = {
+            message_creative_id: message_creative_id,
+            notification_type: notification_type,
+            tag: message_tag
+          }
+          response = post '/broadcast_messages',
+                          body: JSON.dump(body),
+                          format: :json,
+                          query: {
+                            access_token: access_token
+                          }
         end
 
         # Register a hook for the given event.
