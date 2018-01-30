@@ -190,11 +190,9 @@ end
 #### Send a Broadcast Message
 
 ```ruby
-
+# Note: you can only send a single message per broadcast at this time.
 response = Bot.prepare_broadcast({
-              message: {
-                text: "Hello everyone!"
-              }
+              messages: [{text: message}]
             }, 
             access_token: '...')
 response = JSON.parse(response)
