@@ -72,16 +72,19 @@ module Facebook
         #
         # message_creative_id - An integer/string that was returned when calling `prepare_broadcast`
         # notification_type - A string of either REGULAR, SILENT_PUSH, NO_PUSH*
-        # message_tag - A string defining the message type**
+        # custom_label_id - Send broadcast to a subset of PSIDs that are part of a pre-created custom label.**
+        # message_tag - A string defining the message type***
         #
         # * https://developers.facebook.com/docs/messenger-platform/send-messages/broadcast-messages
-        # ** https://developers.facebook.com/docs/messenger-platform/send-messages/message-tags
+        # ** https://developers.facebook.com/docs/messenger-platform/send-messages/broadcast-messages/target-broadcasts
+        # *** https://developers.facebook.com/docs/messenger-platform/send-messages/message-tags
         #
         # Returns a JSON string with the broadcast ID inside it.
-        def broadcast(message_creative_id, notification_type: BROADCAST_MESSAGE_REGULAR, message_tag:, access_token:)
+        def broadcast(message_creative_id, notification_type: BROADCAST_MESSAGE_REGULAR, custom_label_id:, message_tag:, access_token:)
           body = {
             message_creative_id: message_creative_id,
             notification_type: notification_type,
+            custom_label_id: custom_label_id,
             tag: message_tag
           }
           response = post '/broadcast_messages',
