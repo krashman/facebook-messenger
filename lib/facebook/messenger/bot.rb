@@ -93,6 +93,8 @@ module Facebook
                           query: {
                             access_token: access_token
                           }
+
+          response.body
         end
 
         # Register a hook for the given event.
