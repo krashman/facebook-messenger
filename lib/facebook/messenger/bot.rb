@@ -80,13 +80,13 @@ module Facebook
         # *** https://developers.facebook.com/docs/messenger-platform/send-messages/message-tags
         #
         # Returns a JSON string with the broadcast ID inside it.
-        def broadcast(message_creative_id, notification_type: BROADCAST_MESSAGE_REGULAR, custom_label_id:, message_tag:, access_token:)
+        def broadcast(message_creative_id, notification_type: BROADCAST_MESSAGE_REGULAR, custom_label_id: nil, message_tag:, access_token:)
           body = {
             message_creative_id: message_creative_id,
             notification_type: notification_type,
-            custom_label_id: custom_label_id,
             tag: message_tag
           }
+          body[:custom_label_id] = custom_label_id unless custom_label_id.nil?
           response = post '/broadcast_messages',
                           body: JSON.dump(body),
                           format: :json,
